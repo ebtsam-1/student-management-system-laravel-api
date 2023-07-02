@@ -2,6 +2,9 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
+
 class BaseRepository
 {
     public function __construct(public $model, public $searchColumn)
@@ -13,7 +16,8 @@ class BaseRepository
         $search = false,
         $with = false,
         $selects = [],
-        $orderBy = false,
+        $orderBy = 'id',
+        $order = 'desc',
         $pagination = true,
         $paginationNum = 15,
     )
@@ -22,6 +26,7 @@ class BaseRepository
         $query = $this->model->where($filters);
         $query = $search ? $query->where($this->searchColumn, $search): $query;
         $query = $with ? $query->with($with) : $query;
+        $query->orderBy($orderBy, $order);
         $query = $pagination ? $query->paginate($paginationNum) : $query->get();
 
         return $query;
@@ -45,5 +50,15 @@ class BaseRepository
     public function prepareFilters($filters)
     {
         return array_diff($filters, ['*']);
+    }
+
+    public function saveImage($image)
+    {
+        $img = Image::make($image->getRealPath());
+        $img->stream();
+        $name = date("y/m/d") . "/" . rand(1111,9999) . "." . $image->getClientOriginalExtension();
+        Storage::disk('public')->put($name, $img,'public');
+
+        return $name;
     }
 }
