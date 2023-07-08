@@ -19,7 +19,7 @@ class AuthController extends Controller
     {
         $data = $request->validated();
         if(isset($data['avatar'])){
-            $data['avatar'] = $this->userRepository->saveImage($data['avatar']);
+            $data['avatar'] = saveImage($data['avatar']);
         }
         $user = User::create($data);
         $token = $user->createToken('auth-token' . $user->name)->plainTextToken;
