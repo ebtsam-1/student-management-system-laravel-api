@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Exam;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Repositories\StudentRepository;
 
 class StudentController extends Controller
 {
@@ -11,14 +13,14 @@ class StudentController extends Controller
      * Display a listing of the resource.
      */
 
-    public function __construct(private ExampleRespository $exampleRepository)
+    public function __construct(private StudentRepository $studentRepository)
     {
     }
 
     public function index(Request $request)
     {
         $search = $request->get('search', false);
-        $resocrds = ExampleResource::collection($this->exampleRepository->get($search));
+        $resocrds = ExampleResource::collection($this->studentRepository->get($search));
 
         return response()->json(['records' => $records]);
     }
@@ -26,9 +28,9 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Model $model)
+    public function show(Exam $exam)
     {
-        $record = new ExampleResource($this->exampleRepository->show($model->slug));
+        $record = $this->studentRepository->show($exam->slug);
         return response()->json(['record' => $record]);
     }
 
@@ -38,7 +40,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $data = $request->validated();
-        $this->exampleRepository->store($data);
+        $this->studentRepository->store($data);
 
         return response()->json(['message' => 'creating process in progress']);
     }
@@ -47,20 +49,19 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mode $model)
+    public function update(Request $request, Exam $exam)
     {
         $data = $request->validated();
-        $this->exampleRepository->update($model->slug, $data);
-
+        $this->studentRepository->update($exam->slug, $data);
         return response()->json(['message' => 'updating process in progress']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Model $model)
+    public function destroy(Exam $exam)
     {
-        $this->exampleRepository->destroy($model->slug);
+        $this->studentRepository->destroy($exam->slug);
         return response()->json(['message' => 'deleting process in progress']);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Repositories\ExamRespository;
 
 class ExamController extends Controller
 {
@@ -11,14 +12,14 @@ class ExamController extends Controller
      * Display a listing of the resource.
      */
 
-    public function __construct(private ExampleRespository $exampleRepository)
+    public function __construct(private ExamRespository $examRepository)
     {
     }
 
     public function index(Request $request)
     {
         $search = $request->get('search', false);
-        $resocrds = ExampleResource::collection($this->exampleRepository->get($search));
+        $resocrds = ExampleResource::collection($this->examRepository->get($search));
 
         return response()->json(['records' => $records]);
     }
@@ -28,7 +29,7 @@ class ExamController extends Controller
      */
     public function show(Model $model)
     {
-        $record = new ExampleResource($this->exampleRepository->show($model->slug));
+        $record = new ExampleResource($this->examRepository->show($model->slug));
         return response()->json(['record' => $record]);
     }
 
@@ -38,7 +39,7 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         $data = $request->validated();
-        $this->exampleRepository->store($data);
+        $this->examRepository->store($data);
 
         return response()->json(['message' => 'creating process in progress']);
     }
@@ -50,7 +51,7 @@ class ExamController extends Controller
     public function update(Request $request, Mode $model)
     {
         $data = $request->validated();
-        $this->exampleRepository->update($model->slug, $data);
+        $this->examRepository->update($model->slug, $data);
 
         return response()->json(['message' => 'updating process in progress']);
     }
@@ -60,7 +61,7 @@ class ExamController extends Controller
      */
     public function destroy(Model $model)
     {
-        $this->exampleRepository->destroy($model->slug);
+        $this->examRepository->destroy($model->slug);
         return response()->json(['message' => 'deleting process in progress']);
     }
 }

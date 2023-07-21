@@ -6,9 +6,9 @@ use App\Models\School;
 
 class SchoolRepository extends BaseRepository
 {
-    public function __construct()
+    public function __construct(protected School $school, $searchColumns = [], $selects = [] )
     {
         $searchColumn = 'name';
-        Parent::__construct(new School, $searchColumn);
+        Parent::__construct($school, $searchColumn);
     }
 }

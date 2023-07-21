@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\SchoolClass;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Repositories\SchoolClassRepository;
 
 class SchoolClassController extends Controller
 {
@@ -11,14 +13,14 @@ class SchoolClassController extends Controller
      * Display a listing of the resource.
      */
 
-    public function __construct(private ExampleRespository $exampleRepository)
+    public function __construct(private SchoolClassRepository $schoolClassRepository)
     {
     }
 
     public function index(Request $request)
     {
         $search = $request->get('search', false);
-        $resocrds = ExampleResource::collection($this->exampleRepository->get($search));
+        $records = $this->schoolClassRepository->get($search);
 
         return response()->json(['records' => $records]);
     }
@@ -28,7 +30,7 @@ class SchoolClassController extends Controller
      */
     public function show(Model $model)
     {
-        $record = new ExampleResource($this->exampleRepository->show($model->slug));
+        $record = new ExampleResource($this->schoolClassRepository->show($model->slug));
         return response()->json(['record' => $record]);
     }
 
@@ -38,7 +40,7 @@ class SchoolClassController extends Controller
     public function store(Request $request)
     {
         $data = $request->validated();
-        $this->exampleRepository->store($data);
+        $this->schoolClassRepository->store($data);
 
         return response()->json(['message' => 'creating process in progress']);
     }
@@ -50,7 +52,7 @@ class SchoolClassController extends Controller
     public function update(Request $request, Mode $model)
     {
         $data = $request->validated();
-        $this->exampleRepository->update($model->slug, $data);
+        $this->schoolClassRepository->update($model->slug, $data);
 
         return response()->json(['message' => 'updating process in progress']);
     }
@@ -60,7 +62,7 @@ class SchoolClassController extends Controller
      */
     public function destroy(Model $model)
     {
-        $this->exampleRepository->destroy($model->slug);
+        $this->schoolClassRepository->destroy($model->slug);
         return response()->json(['message' => 'deleting process in progress']);
     }
 }

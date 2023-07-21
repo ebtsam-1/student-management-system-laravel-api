@@ -27,28 +27,12 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
-Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function(){
-
+Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('schools', SchoolController::class);
     Route::apiResource('school-classes', SchoolClassController::class);
     Route::apiResource('students', StudentController::class);
     Route::apiResource('subjects', SubjectController::class);
     Route::apiResource('exams', ExamController::class);
 });
-Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function(){
 
-    Route::apiResource('schools', SchoolController::class);
-    Route::apiResource('school-classes', SchoolClassController::class);
-    Route::apiResource('students', StudentController::class);
-    Route::apiResource('subjects', SubjectController::class);
-    Route::apiResource('exams', ExamController::class);
-});
-Route::group(['middleware' => ['auth:sanctum', 'role:admin']], function(){
-
-    Route::apiResource('schools', SchoolController::class);
-    Route::apiResource('school-classes', SchoolClassController::class);
-    Route::apiResource('students', StudentController::class);
-    Route::apiResource('subjects', SubjectController::class);
-    Route::apiResource('exams', ExamController::class);
-});
 

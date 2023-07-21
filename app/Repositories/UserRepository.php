@@ -6,9 +6,9 @@ use App\Models\User;
 
 class UserRepository extends BaseRepository
 {
-    public function __construct(User $user, $searchColumn = [])
+    public function __construct(protected User $user, $searchColumn = [], $selects = [])
     {
         $searchColumn = ['name'];
-        Parent::__construct(new User, $searchColumn);
+        Parent::__construct($user, $searchColumn);
     }
 }

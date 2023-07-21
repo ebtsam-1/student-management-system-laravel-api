@@ -3,12 +3,13 @@
 namespace App\Repositories;
 
 use App\Models\School;
+use App\Models\Subject;
 
 class SchoolRepository extends BaseRepository
 {
-    public function __construct()
+    public function __construct(protected Subject $subject, $searchColumns = [], $selects = [])
     {
-        $searchColumn = 'name';
-        Parent::__construct(new School, $searchColumn);
+        $searchColumns = ['name'];
+        Parent::__construct($subject, $searchColumns);
     }
 }

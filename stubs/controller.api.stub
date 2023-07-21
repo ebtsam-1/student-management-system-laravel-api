@@ -18,7 +18,7 @@ class {{ class }} extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search', false);
-        $resocrds = ExampleResource::collection($this->exampleRepository->get($search));
+        $records = $this->exampleRepository->get($search);
 
         return response()->json(['records' => $records]);
     }
@@ -28,7 +28,7 @@ class {{ class }} extends Controller
      */
     public function show(Model $model)
     {
-        $record = new ExampleResource($this->exampleRepository->show($model->slug));
+        $record = $this->exampleRepository->show($model->slug);
         return response()->json(['record' => $record]);
     }
 
@@ -47,7 +47,7 @@ class {{ class }} extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mode $model)
+    public function update(Request $request, Model $model)
     {
         $data = $request->validated();
         $this->exampleRepository->update($model->slug, $data);
