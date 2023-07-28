@@ -30,7 +30,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-
+    'max_file_size' => env('MAX_FILE_SIZE', 50),
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode
