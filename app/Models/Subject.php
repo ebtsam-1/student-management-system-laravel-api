@@ -21,11 +21,16 @@ class Subject extends Model
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('name')
+            ->generateSlugsFrom('title')
             ->saveSlugsTo('slug')
             ->usingSeparator('-')
             ->slugsShouldBeNoLongerThan(50)
             ->doNotGenerateSlugsOnUpdate();
+    }
+
+    public function files()
+    {
+        return $this->hasMany(SubjectFiles::class);
     }
 
 }

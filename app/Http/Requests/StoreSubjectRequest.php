@@ -11,7 +11,7 @@ class StoreSubjectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreSubjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required','string', 'min:3', 'max:20'],
+            'desc' => ['required','string', 'min:3', 'max:20'],
+            'files' => ['required','array', 'min:1', 'max:5'],
+            'files.*' => ['required', 'mimes:png,jpg,pdf,xslx,mp4,mp3,']
         ];
     }
 }

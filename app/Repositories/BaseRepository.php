@@ -61,4 +61,9 @@ class BaseRepository
 
         return $name;
     }
+
+    public function massInsert($data)
+    {
+        $this->model->insert($data);
+    }
 }

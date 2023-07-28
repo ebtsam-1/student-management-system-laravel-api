@@ -3,10 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Subject;
+use Illuminate\Support\Arr;
+use App\Models\SubjectFiles;
 use Illuminate\Http\Request;
+use App\Services\SaveFilesService;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SubjectResource;
 use App\Repositories\SubjectRepository;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreSubjectRequest;
+use App\Repositories\SubjectFilesRepository;
+use App\Services\HandleFileSizeService;
 
 class SubjectController extends Controller
 {
@@ -14,7 +22,7 @@ class SubjectController extends Controller
      * Display a listing of the resource.
      */
 
-    public function __construct(private SubjectRepository $subjectRepository)
+    public function __construct(private SubjectRepository $subjectRepository, private SubjectFilesRepository $subjectFilesRepository)
     {
     }
 
@@ -38,12 +46,14 @@ class SubjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSubjectRequest $request, HandleFileSizeService $handleFileSizeService)
     {
         $data = $request->validated();
-        $this->subjectRepository->store($data);
+        // files handling
+        // DB::beginTransaction();
+        $subject = $this->subjectRepository->store(Arr::only($data, ['title', 'desc']));
 
-        return response()->json(['message' => 'creating process in progress']);
+        return $handleFileSizeService->handle($subject, $data['files']);
     }
 
 

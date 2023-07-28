@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Models\SubjectFiles;
 
-class SubjectFilesRepositories extends BaseRepository
+class SubjectFilesRepository extends BaseRepository
 {
     public function __construct(protected SubjectFiles $subjectFiles, $searchColumns = [], $selects = [])
     {

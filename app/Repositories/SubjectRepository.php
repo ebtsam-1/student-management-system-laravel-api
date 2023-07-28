@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\School;
 use App\Models\Subject;
 
-class SchoolRepository extends BaseRepository
+class SubjectRepository extends BaseRepository
 {
     public function __construct(protected Subject $subject, $searchColumns = [], $selects = [])
     {

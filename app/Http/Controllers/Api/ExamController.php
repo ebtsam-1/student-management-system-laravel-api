@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Exam;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Repositories\ExamRespository;
 
 class ExamController extends Controller
@@ -19,7 +20,7 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search', false);
-        $resocrds = ExampleResource::collection($this->examRepository->get($search));
+        $records = $this->examRepository->get($search);
 
         return response()->json(['records' => $records]);
     }
@@ -27,9 +28,9 @@ class ExamController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Model $model)
+    public function show(Exam $exam)
     {
-        $record = new ExampleResource($this->examRepository->show($model->slug));
+        $record = $this->examRepository->show($exam->slug);
         return response()->json(['record' => $record]);
     }
 
@@ -48,10 +49,10 @@ class ExamController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mode $model)
+    public function update(Request $request, Exam $exam)
     {
         $data = $request->validated();
-        $this->examRepository->update($model->slug, $data);
+        $this->examRepository->update($exam->slug, $data);
 
         return response()->json(['message' => 'updating process in progress']);
     }
@@ -59,9 +60,9 @@ class ExamController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Model $model)
+    public function destroy(Exam $exam)
     {
-        $this->examRepository->destroy($model->slug);
+        $this->examRepository->destroy($exam->slug);
         return response()->json(['message' => 'deleting process in progress']);
     }
 }

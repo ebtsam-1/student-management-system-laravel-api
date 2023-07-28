@@ -28,9 +28,9 @@ class SchoolClassController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Model $model)
+    public function show(SchoolClass $schoolClass)
     {
-        $record = new ExampleResource($this->schoolClassRepository->show($model->slug));
+        $record = $this->schoolClassRepository->show($schoolClass->slug);
         return response()->json(['record' => $record]);
     }
 
@@ -49,10 +49,10 @@ class SchoolClassController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mode $model)
+    public function update(Request $request, SchoolClass $schoolClass)
     {
         $data = $request->validated();
-        $this->schoolClassRepository->update($model->slug, $data);
+        $this->schoolClassRepository->update($schoolClass->slug, $data);
 
         return response()->json(['message' => 'updating process in progress']);
     }
@@ -60,9 +60,9 @@ class SchoolClassController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Model $model)
+    public function destroy(SchoolClass $schoolClass)
     {
-        $this->schoolClassRepository->destroy($model->slug);
+        $this->schoolClassRepository->destroy($schoolClass->slug);
         return response()->json(['message' => 'deleting process in progress']);
     }
 }
