@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -53,5 +55,19 @@ class AuthController extends Controller
         Auth::user()->tokens()->delete();
 
         return response()->json(['message' => "logged out!"]);
+    }
+
+    //change & forget password
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        $data = $request->validated();
+
+        if(! Hash::check($data['old_password'], auth::user()->password)){
+            return response()->json(['message' => 'wrong password']);
+        }
+
+        return 'confirmed';
+
     }
 }
